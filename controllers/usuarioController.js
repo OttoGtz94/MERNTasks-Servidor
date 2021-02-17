@@ -1,6 +1,7 @@
 const bcryptjs = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const Usuario = require('../models/Usuario');
+const jwt = require('jsonwebtoken');
 
 exports.crearUsuario = async (req, res) => {
 	// revisar si hay errores en express-validator
@@ -32,8 +33,25 @@ exports.crearUsuario = async (req, res) => {
 		// guardar usuario
 		await usuario.save();
 
-		// mensaje de confirmacion
-		res.json({ msg: 'Usuario creado correctamente' });
+		// crear el json web token
+		const payload = {
+			usuario: {
+				id: usuario.id, //guardamos como payload el id del usuario
+			},
+		};
+		// firmar e json web token
+		jwt.sign(
+			payload,
+			process.env.SECRETA,
+			{
+				expiresIn: 3600, //para que expire en una hora
+			},
+			(error, token) => {
+				if (error) throw error;
+				// mensaje de confirmacion
+				res.json({ token: token });
+			},
+		);
 	} catch (error) {
 		console.log(error);
 		res.status(400).send('Hubo un error');
