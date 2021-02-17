@@ -4,7 +4,7 @@ const conectarDB = require('./config/db');
 // Crear servidor
 const app = express();
 // Puerto de la app
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 // Conectar a la BD
 conectarDB();
 
@@ -14,6 +14,7 @@ app.use(express.json({ extended: true }));
 // importar rutas
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/proyectos', require('./routes/proyectos'));
 
 // Arrancar la app
 app.listen(PORT, () => {
