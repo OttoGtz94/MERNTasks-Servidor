@@ -15,6 +15,6 @@ router.post(
 	],
 	proyectoController.crearProyecto,
 );
-router.get('/', auth, proyectoController.crearProyecto);
+router.get('/', auth, proyectoController.obtenerProyectos);
 
 module.exports = router;

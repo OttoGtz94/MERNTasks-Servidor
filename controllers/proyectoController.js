@@ -1,6 +1,7 @@
 const Proyecto = require('../models/Proyecto');
 const { validationResult } = require('express-validator');
 
+// crear proyectos
 exports.crearProyecto = async (req, res) => {
 	// revisar si hay errores
 	const errores = validationResult(req);
@@ -21,5 +22,18 @@ exports.crearProyecto = async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		res.status(500).send('Hubo un error');
+	}
+};
+
+// obtener los proyectos del usuario actual
+exports.obtenerProyectos = async (req, res) => {
+	try {
+		const proyectos = await Proyecto.find({
+			creador: req.usuario.id,
+		});
+		res.json({ proyectos });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Error al importar los proyectos');
 	}
 };
