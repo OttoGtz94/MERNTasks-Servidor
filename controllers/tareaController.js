@@ -58,6 +58,48 @@ exports.obtenerTareas = async (req, res) => {
 		res.json({ tareas });
 	} catch (error) {
 		console.log(error);
-		res.status(404).send('Error al obtener tareas');
+		res.status(500).send('Error al obtener tareas');
+	}
+};
+exports.actualizarTarea = async (req, res) => {
+	try {
+		// extraer el proyecto
+		const { proyecto, nombre, estado } = req.body;
+
+		// comprobar si la tarea existe
+		let tarea = await Tarea.findById(req.params.id);
+
+		if (!tarea) {
+			return res.status(404).json({ msg: 'No existe tarea' });
+		}
+
+		// comprobar si existe
+		const existeProyecto = await Proyecto.findById(proyecto);
+
+		// revisar si el proyecto actual pertenece al usuario autenticado
+		if (existeProyecto.creador.toString() !== req.usuario.id) {
+			return res.status(401).json({ msg: 'No autorizado' });
+		}
+
+		// crear obj con nva info
+		const nuevaTarea = {};
+
+		if (nombre) {
+			nuevaTarea.nombre = nombre;
+		}
+		if (estado) {
+			nuevaTarea.estado = estado;
+		}
+
+		// guardar tarea
+		tarea = await Tarea.findOneAndUpdate(
+			{ _id: req.params.id },
+			nuevaTarea,
+			{ new: true },
+		);
+		res.json({ tarea });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Error al obtener tareas');
 	}
 };
