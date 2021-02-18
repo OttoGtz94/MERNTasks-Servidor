@@ -103,3 +103,32 @@ exports.actualizarTarea = async (req, res) => {
 		res.status(500).send('Error al obtener tareas');
 	}
 };
+
+exports.eliminarTarea = async (req, res) => {
+	try {
+		// extraer el proyecto
+		const { proyecto } = req.body;
+
+		// comprobar si la tarea existe
+		let tarea = await Tarea.findById(req.params.id);
+
+		if (!tarea) {
+			return res.status(404).json({ msg: 'No existe tarea' });
+		}
+
+		// comprobar si existe
+		const existeProyecto = await Proyecto.findById(proyecto);
+
+		// revisar si el proyecto actual pertenece al usuario autenticado
+		if (existeProyecto.creador.toString() !== req.usuario.id) {
+			return res.status(401).json({ msg: 'No autorizado' });
+		}
+
+		// eliminar tarea
+		await Tarea.findOneAndRemove({ _id: req.params.id });
+		res.json({ msg: 'Tarea eliminada' });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Error al obtener tareas');
+	}
+};
