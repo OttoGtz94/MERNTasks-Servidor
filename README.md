@@ -6,6 +6,7 @@
 -  **bcryptjs**: Encripta las contraseñas.
 -  **express-validator**: Agregar reglas de validación.
 -  **jsonwebtoken**: Permite generar un jwt cuando creamos un nuevo usuario y cuando la autenticación sea correcta.
+-  **cors**:
 
 ### Dependencias de desarrollo
 
