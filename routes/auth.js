@@ -9,13 +9,13 @@ const auth = require('../middleware/auth');
 router.post(
 	'/',
 	// reglas de validacion con express-validator
-	[
-		check('email', 'Agrega un email válido').isEmail(),
-		check(
-			'password',
-			'El password debe tener minimo 6 caracteres',
-		).isLength({ min: 6 }),
-	],
+	// [
+	// 	check('email', 'Agrega un email válido').isEmail(),
+	// 	check(
+	// 		'password',
+	// 		'El password debe tener minimo 6 caracteres',
+	// 	).isLength({ min: 6 }),
+	// ],
 	authController.autenticarUsuario,
 );
 
