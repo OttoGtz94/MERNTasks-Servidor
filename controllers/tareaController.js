@@ -83,13 +83,14 @@ exports.actualizarTarea = async (req, res) => {
 
 		// crear obj con nva info
 		const nuevaTarea = {};
-
-		if (nombre) {
-			nuevaTarea.nombre = nombre;
-		}
-		if (estado) {
-			nuevaTarea.estado = estado;
-		}
+		nuevaTarea.nombre = nombre;
+		nuevaTarea.estado = estado;
+		// if (nombre) {
+		// 	nuevaTarea.nombre = nombre;
+		// }
+		// if (estado) {
+		// 	nuevaTarea.estado = estado;
+		// }
 
 		// guardar tarea
 		tarea = await Tarea.findOneAndUpdate(
@@ -107,7 +108,7 @@ exports.actualizarTarea = async (req, res) => {
 exports.eliminarTarea = async (req, res) => {
 	try {
 		// extraer el proyecto
-		const { proyecto } = req.body;
+		const { proyecto } = req.query;
 
 		// comprobar si la tarea existe
 		let tarea = await Tarea.findById(req.params.id);
